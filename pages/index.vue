@@ -14,20 +14,20 @@
   </div>
   <main class="relative z-10 overflow-hidden">
     <div ref="headContainerRef" class="fixed left-0 top-0 w-full z-20">
-      <Intro
+      <!-- <Intro
         v-if="showIntro"
         ref="headRef"
         @startAnimation="handleStart"
         :isAnimationStopped="isAnimationStopped"
         :pageSlug="slug"
-      />
+      /> -->
     </div>
     <div class="relative">
-      <div><Services :pageSlug="slug" /></div>
+      <!-- <div><Services :pageSlug="slug" /></div>
       <div><Experience :pageSlug="slug" /></div>
       <div ref="technologiesRef"><Technologies :pageSlug="slug" /></div>
       <div><Projects :pageSlug="slug" /></div>
-      <div ref="contactsRef"><Contacts :pageSlug="slug" /></div>
+      <div ref="contactsRef"><Contacts :pageSlug="slug" /></div> -->
     </div>
   </main>
 </template>

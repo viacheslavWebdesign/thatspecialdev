@@ -89,7 +89,7 @@ const updateCursorPosition = (event: MouseEvent): void => {
 };
 
 onMounted(() => {
-  fetchBlockData();
+  // fetchBlockData();
   const cursor = cursorRef.value;
   if (!cursor) return;
 
