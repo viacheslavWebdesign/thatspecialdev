@@ -33,7 +33,6 @@ import { getBlockData } from "@/helpers/getBlockData";
 import { getPageData } from "@/helpers/getPageData";
 const cursorRef = ref<HTMLElement | null>(null);
 const slug: string = "404";
-
 const localPath = useLocalePath();
 
 const er = ref<ErrorPage>({
@@ -89,7 +88,7 @@ const updateCursorPosition = (event: MouseEvent): void => {
 };
 
 onMounted(() => {
-  // fetchBlockData();
+  fetchBlockData();
   const cursor = cursorRef.value;
   if (!cursor) return;
 
