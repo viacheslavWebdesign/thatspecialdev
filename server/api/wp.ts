@@ -1,5 +1,5 @@
 export default defineEventHandler(async (event) => {
-  const { wpKey } = useRuntimeConfig();
+  const { wpKey } = useRuntimeConfig().private;
   const { slug, lang } = getQuery(event);
 
   let uri = `https://back.thatspecial.dev/wp-json/wp/v2/pages`;

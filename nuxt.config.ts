@@ -28,6 +28,8 @@ export default defineNuxtConfig({
     defaultLocale: "en",
   },
   runtimeConfig: {
-    wpKey: process.env.WP_API_KEY,
+    private: {
+      wpKey: process.env.WP_API_KEY,
+    },
   },
 });
