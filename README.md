@@ -1,75 +1,78 @@
-# Nuxt Minimal Starter
+# My presentation website
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Look at the [live version](https://thatspecial.dev) to learn more.
 
-## Setup
+## Credits
 
-Make sure to install dependencies:
-
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+People who worked on this :
 
 ```bash
-# npm
-npm run dev
+# Frontend Developer
+Me
 
-# pnpm
-pnpm dev
+# Backend Developer
+Me
 
-# yarn
-yarn dev
+# Fullstack Developer
+Me
 
-# bun
-bun run dev
+# Web Designer
+Me
+
+# UI/UX Designer
+Me
+
+# DevOps Engineer
+Me
+
+# QA Engineer (Quality Assurance)
+Me
+
+# Content Manager
+Me
+
+# SEO Specialist
+Me
+
+# Product Manager
+Me
+
+# Project Manager
+Me
+
+# Data Analyst
+Me
+
+# Database Administrator (DBA)
+Me
+
+# Accessibility Specialist
+Me
+
+# Technical Writer
+Me
+
+# Security Specialist (Web Security Engineer)
+Me
+
+# Performance Optimization Specialist
+Me
+
+# API Developer
+Me
+
+# Mobile Web Developer
+Me
+
+# Driver
+Me
+
+# Plumber
+Me
+
+# Driver
+Me
+
+# Me
+Me
 ```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
