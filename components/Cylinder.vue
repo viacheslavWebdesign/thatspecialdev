@@ -63,7 +63,7 @@ onMounted(() => {
       const heightStep = height / rows;
 
       textures.forEach((texture, index) => {
-        texture.encoding = THREE.sRGBEncoding;
+        // texture.encoding = THREE.sRGBEncoding;
         texture.colorSpace = THREE.SRGBColorSpace;
         texture.minFilter = THREE.LinearFilter;
         const row = Math.floor(index / columns);

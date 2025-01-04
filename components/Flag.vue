@@ -87,7 +87,7 @@ onMounted(() => {
 
   const textureLoader = new THREE.TextureLoader();
   textureLoader.load(props.texture, (texture) => {
-    texture.encoding = THREE.sRGBEncoding;
+    // texture.encoding = THREE.sRGBEncoding;
     texture.minFilter = THREE.LinearFilter;
 
     const geometry = new THREE.BufferGeometry();
