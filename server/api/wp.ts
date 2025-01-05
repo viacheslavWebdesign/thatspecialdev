@@ -8,7 +8,6 @@ export default defineEventHandler(async (event) => {
       method: "GET",
       headers: {
         Authorization: `Bearer ${wpKey}`,
-        "Cache-Control": "no-cache, no-store, must-revalidate",
       },
     });
 
