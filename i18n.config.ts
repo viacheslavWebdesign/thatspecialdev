@@ -1,6 +1,6 @@
-import en from "@/public/locales/en.json";
-import ua from "@/public/locales/ua.json";
-import ru from "@/public/locales/ru.json";
+// import en from "@/public/locales/en.json";
+// import ua from "@/public/locales/ua.json";
+// import ru from "@/public/locales/ru.json";
 
 export default defineI18nConfig(() => ({
   legacy: false,
@@ -9,9 +9,9 @@ export default defineI18nConfig(() => ({
   globalInjection: true,
   escapeParameterHtml: true,
   warnHtmlMessage: false,
-  messages: {
-    en,
-    ua,
-    ru,
-  },
+  // messages: {
+  //   en,
+  //   ua,
+  //   ru,
+  // },
 }));

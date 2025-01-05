@@ -26,6 +26,13 @@ export default defineNuxtConfig({
     lazy: false,
     strategy: "prefix_except_default",
     defaultLocale: "en",
+    trailingSlash: true,
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      alwaysRedirect: true,
+      fallbackLocale: "en",
+    },
   },
   runtimeConfig: {
     private: {
