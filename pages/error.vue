@@ -32,7 +32,7 @@ import { gsap } from "gsap";
 import { getBlockData } from "@/helpers/getBlockData";
 import { getPageMeta } from "@/helpers/getPageMeta";
 const cursorRef = ref<HTMLElement | null>(null);
-const slug: string = "404";
+const slug: string = "errorpage";
 const localPath = useLocalePath();
 const { locale } = useI18n();
 
@@ -51,6 +51,7 @@ const { data: meta } = useAsyncData("pageMeta", async () => {
 
 if (meta.value) {
   useHead({
+    status: 404,
     title: meta.value.title,
     meta: [
       { name: "description", content: meta.value.description },
