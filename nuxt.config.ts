@@ -1,6 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  ssr: true,
   devtools: { enabled: false },
   modules: ["@nuxtjs/tailwindcss", "@tresjs/nuxt", "@nuxtjs/i18n"],
   compatibilityDate: "2024-11-01",
