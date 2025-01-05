@@ -17,9 +17,6 @@ jobs:
           node-version: "20"
       # Pick your own package manager and build script
       - run: npm install
-      - run: echo $TEST_SECRET
-        env: 
-          TEST_SECRET: ${{ secrets.TEST_SECRET }}
       - run: npx nuxt build --preset github_pages
         env: 
           WP_API_KEY: ${{ secrets.WP_API_KEY }}
