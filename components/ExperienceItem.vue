@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Job } from "@/helpers/interfaces";
 const props = defineProps<{ job: Job }>();
+const { t } = useI18n;
 </script>
 
 <template>
@@ -15,12 +16,14 @@ const props = defineProps<{ job: Job }>();
           {{ job.date }}
         </p>
       </div>
-      <h5 class="font-medium md:text-lg mb-1 md:mb-2">Responsibilities</h5>
+      <h5 class="font-medium md:text-lg mb-1 md:mb-2">
+        {{ $t("responsibilities") }}
+      </h5>
       <div
         v-html="job.responsibilities"
         class="mb-2 md:mb-4 text-sm md:text-base experience-content text-slate-100/70 max-w-[600px]"
       ></div>
-      <h5 class="font-medium md:text-lg mb-1 md:mb-2">Projects</h5>
+      <h5 class="font-medium md:text-lg mb-1 md:mb-2">{{ $t("projects") }}</h5>
       <div class="flex flex-wrap gap-x-4 max-w-[500px]">
         <a
           v-for="(project, index) in job.projects"
