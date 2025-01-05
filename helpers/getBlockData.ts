@@ -1,6 +1,6 @@
 export const getBlockData = async (slug, locale, block) => {
   try {
-    const response = await $fetch("/api/wp");
+    const response = await $fetch("https://thatspecial.dev/api/wp");
     const pagesData = response?.data || response;
 
     const page = pagesData.find((page) => page.slug === slug);
