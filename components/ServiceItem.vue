@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import type { Service } from "@/helpers/interfaces";
+const props = defineProps<{ service: Service }>();
+const boundingRef = ref<DOMRect | null>(null);
+
+const cardEnter = (ev: MouseEvent) => {
+  boundingRef.value = (ev.currentTarget as HTMLElement).getBoundingClientRect();
+};
+
+const cardAnimation = (ev: MouseEvent) => {
+  if (!boundingRef.value) return;
+  const x = ev.clientX - boundingRef.value.left;
+  const y = ev.clientY - boundingRef.value.top;
+  const xPercentage = x / boundingRef.value.width;
+  const yPercentage = y / boundingRef.value.height;
+
+  ev.currentTarget.style.setProperty("--x", `${xPercentage * 100}%`);
+  ev.currentTarget.style.setProperty("--y", `${yPercentage * 100}%`);
+};
+
+const cardLeave = (ev: MouseEvent) => {
+  boundingRef.value = null;
+};
+</script>
+
 <template>
   <div
     @mouseenter="cardEnter"
@@ -26,28 +51,3 @@
     ></div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { Service } from "@/helpers/interfaces";
-const props = defineProps<{ service: Service }>();
-const boundingRef = ref<DOMRect | null>(null);
-
-const cardEnter = (ev: MouseEvent) => {
-  boundingRef.value = (ev.currentTarget as HTMLElement).getBoundingClientRect();
-};
-
-const cardAnimation = (ev: MouseEvent) => {
-  if (!boundingRef.value) return;
-  const x = ev.clientX - boundingRef.value.left;
-  const y = ev.clientY - boundingRef.value.top;
-  const xPercentage = x / boundingRef.value.width;
-  const yPercentage = y / boundingRef.value.height;
-
-  ev.currentTarget.style.setProperty("--x", `${xPercentage * 100}%`);
-  ev.currentTarget.style.setProperty("--y", `${yPercentage * 100}%`);
-};
-
-const cardLeave = (ev: MouseEvent) => {
-  boundingRef.value = null;
-};
-</script>

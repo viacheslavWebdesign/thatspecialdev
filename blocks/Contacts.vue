@@ -1,3 +1,85 @@
+<script setup lang="ts">
+import type { Slide, Details, Requisites } from "@/helpers/interfaces";
+import { getBlockData } from "@/helpers/getBlockData";
+import * as THREE from "three";
+const { locale } = useI18n();
+
+const props = defineProps({
+  pageSlug: {
+    type: String,
+    required: true,
+  },
+});
+
+const { data: contactsData } = await useAsyncData("contactsData", () =>
+  getBlockData(props.pageSlug, locale.value, "create-block/contacts")
+);
+
+const slides = contactsData.value.slides.map((slide: Slide) => ({
+  text: slide.text,
+  highlighted: slide.highlighted || false,
+}));
+
+const details = ref<Details>({
+  texture: contactsData.value.details.image.url,
+  requisites: contactsData.value.details.requisites.map((req: Requisites) => ({
+    type: req.type,
+    link: req.link,
+  })),
+});
+
+const contactsSectionRef = ref<HTMLElement | null>(null);
+const contactsRef = ref<HTMLElement | null>(null);
+
+const groupRotationRef = ref(new THREE.Euler(0, 0, 0));
+let groupRotation = groupRotationRef.value;
+const handleGroupRotation = (rotation: THREE.Euler) => {
+  groupRotation = rotation;
+};
+
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
+
+onMounted(() => {
+  nextTick(() => {
+    const contactsSection = contactsSectionRef.value;
+    const contacts = contactsRef.value;
+
+    if (!contacts || !contactsSection) return;
+
+    const getScrollAmount = (): number => {
+      const contactsWidth: number = contacts.scrollWidth;
+      const sectionWidth: number = contactsSection.clientWidth;
+      return contactsWidth - sectionWidth;
+    };
+
+    const tween = gsap.to(contacts, {
+      x: () => -getScrollAmount(),
+      ease: "none",
+    });
+
+    ScrollTrigger.create({
+      trigger: contactsSection,
+      start: "top top",
+      end: () => `+=${getScrollAmount()}`,
+      pin: true,
+      animation: tween,
+      invalidateOnRefresh: true,
+      scrub: 1,
+      onUpdate: (self) => {
+        const lastSlideIndex = slides.length - 1;
+        if (self.progress >= lastSlideIndex / slides.length) {
+          const rotationAmount = self.progress * 720;
+          const radians = THREE.MathUtils.degToRad(rotationAmount);
+          groupRotation.set(0, radians, 0);
+        }
+      },
+    });
+  });
+});
+</script>
+
 <template>
   <section class="relative overflow-hidden" ref="contactsSectionRef">
     <div class="flex" ref="contactsRef">
@@ -39,95 +121,3 @@
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-import type { Slide, Details, Requisites } from "@/helpers/interfaces";
-import { getBlockData } from "@/helpers/getBlockData";
-import * as THREE from "three";
-
-const props = defineProps({
-  pageSlug: {
-    type: String,
-    required: true,
-  },
-});
-
-const slides = ref<Slide[]>([]);
-
-const details = ref<Details>({
-  texture: "",
-  requisites: [] as Requisites[],
-});
-
-const fetchBlockData = async () => {
-  const blockAttrs = await getBlockData(
-    props.pageSlug,
-    "create-block/contacts"
-  );
-
-  if (blockAttrs) {
-    slides.value = blockAttrs.slides.map((slide: any) => ({
-      text: slide.text,
-      highlighted: slide.highlighted || false,
-    }));
-
-    details.value.texture = blockAttrs.details.image.url || "";
-    details.value.requisites = blockAttrs.details.requisites.map(
-      (req: any) => ({
-        type: req.type,
-        link: req.link,
-      })
-    );
-  }
-};
-
-const contactsSectionRef = ref<HTMLElement | null>(null);
-const contactsRef = ref<HTMLElement | null>(null);
-
-const groupRotationRef = ref(new THREE.Euler(0, 0, 0));
-let groupRotation = groupRotationRef.value;
-const handleGroupRotation = (rotation: THREE.Euler) => {
-  groupRotation = rotation;
-};
-
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
-
-onMounted(async () => {
-  await fetchBlockData();
-  const contactsSection = contactsSectionRef.value;
-  const contacts = contactsRef.value;
-
-  if (!contacts || !contactsSection) return;
-
-  const getScrollAmount = (): number => {
-    const contactsWidth: number = contacts.scrollWidth;
-    const sectionWidth: number = contactsSection.clientWidth;
-    return contactsWidth - sectionWidth;
-  };
-
-  const tween = gsap.to(contacts, {
-    x: () => -getScrollAmount(),
-    ease: "none",
-  });
-
-  ScrollTrigger.create({
-    trigger: contactsSection,
-    start: "top top",
-    end: () => `+=${getScrollAmount()}`,
-    pin: true,
-    animation: tween,
-    invalidateOnRefresh: true,
-    scrub: 1,
-    onUpdate: (self) => {
-      const lastSlideIndex = slides.length - 1;
-      if (self.progress >= lastSlideIndex / slides.length) {
-        const rotationAmount = self.progress * 720;
-        const radians = THREE.MathUtils.degToRad(rotationAmount);
-        groupRotation.set(0, radians, 0);
-      }
-    },
-  });
-});
-</script>

@@ -30,43 +30,40 @@
 import type { ErrorPage } from "@/helpers/interfaces";
 import { gsap } from "gsap";
 import { getBlockData } from "@/helpers/getBlockData";
-import { getPageData } from "@/helpers/getPageData";
+import { getPageMeta } from "@/helpers/getPageMeta";
 const cursorRef = ref<HTMLElement | null>(null);
 const slug: string = "404";
 const localPath = useLocalePath();
+const { locale } = useI18n();
 
-const er = ref<ErrorPage>({
-  title: "",
-  button: "",
-});
-
-const fetchBlockData = async () => {
-  const blockAttrs = await getBlockData(slug, "create-block/errorpage");
-  if (blockAttrs) {
-    er.value = {
-      title: blockAttrs.title || "",
-      button: blockAttrs.buttonText || "",
-    };
-  }
-};
-
-const { data: seoData, error } = await useAsyncData("seoData", () =>
-  getPageData(slug)
+const { data: errorData } = await useAsyncData("errorData", () =>
+  getBlockData(slug, locale.value, "create-block/errorpage")
 );
 
-if (seoData.value) {
-  const seo = seoData.value[0].yoast_head_json;
+const er = ref<ErrorPage>({
+  title: errorData.value.title,
+  button: errorData.value.buttonText,
+});
+
+const { data: meta } = useAsyncData("pageMeta", async () => {
+  return await getPageMeta(slug, locale.value);
+});
+
+if (meta.value) {
   useHead({
-    title: seo.title,
+    title: meta.value.title,
     meta: [
-      { name: "description", content: seo.description },
-      { name: "robots", content: `${seo.robots.index}, ${seo.robots.follow}` },
-      { property: "og:title", content: seo.og_title },
-      { property: "og:description", content: seo.og_description },
-      { property: "og:url", content: seo.og_url },
-      { property: "og:type", content: seo.og_type },
-      { property: "og:locale", content: seo.og_locale },
-      { name: "twitter:card", content: seo.twitter_card },
+      { name: "description", content: meta.value.description },
+      {
+        name: "robots",
+        content: `${meta.value.robots.index}, ${meta.value.robots.follow}`,
+      },
+      { property: "og:title", content: meta.value.og_title },
+      { property: "og:description", content: meta.value.og_description },
+      { property: "og:url", content: meta.value.og_url },
+      { property: "og:type", content: meta.value.og_type },
+      { property: "og:locale", content: meta.value.og_locale },
+      { name: "twitter:card", content: meta.value.twitter_card },
     ],
   });
 }
@@ -88,7 +85,6 @@ const updateCursorPosition = (event: MouseEvent): void => {
 };
 
 onMounted(() => {
-  fetchBlockData();
   const cursor = cursorRef.value;
   if (!cursor) return;
 
@@ -115,10 +111,10 @@ onMounted(() => {
 
 <style scoped>
 h2 :deep(em) {
-  @apply text-red-600/80;
+  color: rgb(220 38 38 / 0.8);
 }
 a::before {
-  @apply bg-red-600/80;
+  background-color: rgb(220 38 38 / 0.8);
   content: "";
   display: block;
   position: absolute;

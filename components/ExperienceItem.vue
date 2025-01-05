@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import type { Job } from "@/helpers/interfaces";
+const props = defineProps<{ job: Job }>();
+</script>
+
 <template>
   <div class="flex flex-col md:flex-row gap-6 md:gap-10">
     <div class="w-full md:w-1/2">
@@ -31,8 +36,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { Job } from "@/helpers/interfaces";
-const props = defineProps<{ job: Job }>();
-</script>

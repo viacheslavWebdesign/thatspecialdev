@@ -1,9 +1,3 @@
-<template>
-  <div ref="containerRef" class="w-full max-w-[800px] mx-auto">
-    <canvas ref="canvasRef" class="w-full"></canvas>
-  </div>
-</template>
-
 <script setup lang="ts">
 import * as THREE from "three";
 import { gsap } from "gsap";
@@ -148,3 +142,9 @@ onMounted(() => {
   emit("groupRotation", groupElement.rotation);
 });
 </script>
+
+<template>
+  <div ref="containerRef" class="w-full max-w-[800px] mx-auto">
+    <canvas ref="canvasRef" class="w-full"></canvas>
+  </div>
+</template>

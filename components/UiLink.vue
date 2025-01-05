@@ -1,3 +1,9 @@
+<script setup lang="ts">
+const props = defineProps<{
+  href: string;
+}>();
+</script>
+
 <template>
   <a
     :href="href"
@@ -6,12 +12,6 @@
     <span><slot /></span>
   </a>
 </template>
-
-<script setup lang="ts">
-const props = defineProps<{
-  href: string;
-}>();
-</script>
 
 <style scoped>
 a::before {

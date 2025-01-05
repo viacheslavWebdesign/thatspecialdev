@@ -1,28 +1,3 @@
-<template>
-  <div class="relative" ref="dropdownContainer">
-    <button
-      @click="toggleDropdown"
-      class="bg-white/10 rounded-lg shadow-xl font-machina py-2 px-6 border border-slate-100/10 transition-colors hover:bg-white/20"
-    >
-      {{ locale.toUpperCase() }}
-    </button>
-    <transition name="fade-slide">
-      <ul
-        v-if="showDropdown"
-        class="absolute -bottom-2 right-0 text-center translate-y-full min-w-full bg-white/10 rounded-lg shadow-xl font-machina py-2 px-6 border border-slate-100/10"
-      >
-        <li v-for="item in availableLocales" :key="item">
-          <NuxtLink
-            :to="switchLocalePath(item)"
-            class="transition-colors hover:text-white/50 py-1 block"
-            >{{ item.toUpperCase() }}</NuxtLink
-          >
-        </li>
-      </ul>
-    </transition>
-  </div>
-</template>
-
 <script setup lang="ts">
 const showDropdown = ref(false);
 const dropdownContainer = ref<HTMLElement | null>(null);
@@ -52,6 +27,31 @@ onBeforeUnmount(() => {
   document.removeEventListener("click", handleClickOutside);
 });
 </script>
+
+<template>
+  <div class="relative" ref="dropdownContainer">
+    <button
+      @click="toggleDropdown"
+      class="bg-white/10 rounded-lg shadow-xl font-machina py-2 px-6 border border-slate-100/10 transition-colors hover:bg-white/20"
+    >
+      {{ locale.toUpperCase() }}
+    </button>
+    <transition name="fade-slide">
+      <ul
+        v-if="showDropdown"
+        class="absolute -bottom-2 right-0 text-center translate-y-full min-w-full bg-white/10 rounded-lg shadow-xl font-machina py-2 px-6 border border-slate-100/10"
+      >
+        <li v-for="item in availableLocales" :key="item">
+          <NuxtLink
+            :to="switchLocalePath(item)"
+            class="transition-colors hover:text-white/50 py-1 block"
+            >{{ item.toUpperCase() }}</NuxtLink
+          >
+        </li>
+      </ul>
+    </transition>
+  </div>
+</template>
 
 <style scoped>
 .fade-slide-enter-from,

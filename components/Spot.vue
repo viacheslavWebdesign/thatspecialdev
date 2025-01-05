@@ -1,19 +1,3 @@
-<template>
-  <TresCanvas alpha>
-    <TresPerspectiveCamera :position="[0, 0, 4]" />
-    <TresGroup>
-      <TresMesh :position="[0.5, 0, 0]" ref="blobRef">
-        <TresCircleGeometry :args="[1, 64]" />
-        <TresShaderMaterial
-          :vertex-shader="vertexShader"
-          :fragment-shader="fragmentShader"
-          :uniforms="uniforms"
-        />
-      </TresMesh>
-    </TresGroup>
-  </TresCanvas>
-</template>
-
 <script setup lang="ts">
 import { Vector2 } from "three";
 
@@ -61,3 +45,19 @@ onLoop(({ elapsed }) => {
   }
 });
 </script>
+
+<template>
+  <TresCanvas alpha>
+    <TresPerspectiveCamera :position="[0, 0, 4]" />
+    <TresGroup>
+      <TresMesh :position="[0.5, 0, 0]" ref="blobRef">
+        <TresCircleGeometry :args="[1, 64]" />
+        <TresShaderMaterial
+          :vertex-shader="vertexShader"
+          :fragment-shader="fragmentShader"
+          :uniforms="uniforms"
+        />
+      </TresMesh>
+    </TresGroup>
+  </TresCanvas>
+</template>

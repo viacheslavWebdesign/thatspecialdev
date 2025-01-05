@@ -1,7 +1,3 @@
-<template>
-  <canvas ref="canvas" class="size-full" />
-</template>
-
 <script setup lang="ts">
 import * as THREE from "three";
 const canvas = ref<HTMLCanvasElement | null>(null);
@@ -65,3 +61,7 @@ onMounted(() => {
   });
 });
 </script>
+
+<template>
+  <canvas ref="canvas" class="size-full" />
+</template>

@@ -1,3 +1,33 @@
+<script setup lang="ts">
+import type { Experience, Job, ExperienceProject } from "@/helpers/interfaces";
+import { getBlockData } from "@/helpers/getBlockData";
+const { locale } = useI18n();
+const props = defineProps({
+  pageSlug: {
+    type: String,
+    required: true,
+  },
+});
+
+const { data: experienceData } = await useAsyncData("experienceData", () =>
+  getBlockData(props.pageSlug, locale.value, "create-block/experience")
+);
+
+const experience = ref<Experience>({
+  title: experienceData.value.title,
+  job: experienceData.value.jobs.map((job: Job) => ({
+    title: job.title,
+    date: job.date,
+    texture: job.image?.url,
+    responsibilities: job.text,
+    projects: job.projects.map((project: ExperienceProject) => ({
+      image: project.image?.url,
+      link: project.link,
+    })),
+  })),
+});
+</script>
+
 <template>
   <section class="pt-20 md:pt-40 relative">
     <div class="w-full max-w-screen-xl px-5 mx-auto relative">
@@ -15,45 +45,6 @@
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-import type { Experience, Job } from "@/helpers/interfaces";
-import { getBlockData } from "@/helpers/getBlockData";
-const props = defineProps({
-  pageSlug: {
-    type: String,
-    required: true,
-  },
-});
-
-const experience = ref<Experience>({
-  title: "",
-  job: [] as Job[],
-});
-const fetchBlockData = async () => {
-  const blockAttrs = await getBlockData(
-    props.pageSlug,
-    "create-block/experience"
-  );
-
-  if (blockAttrs) {
-    experience.value.title = blockAttrs.title || "";
-    experience.value.job = blockAttrs.jobs.map((job: any) => ({
-      title: job.title || "",
-      date: job.date || "",
-      texture: job.image?.url || "",
-      responsibilities: job.text || "",
-      projects: job.projects.map((project: any) => ({
-        image: project.image?.url || "",
-        link: project.link || "",
-      })),
-    }));
-  }
-};
-onMounted(() => {
-  fetchBlockData();
-});
-</script>
 
 <style scoped>
 h2 :deep(em) {

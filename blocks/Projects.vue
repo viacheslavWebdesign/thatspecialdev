@@ -21,6 +21,7 @@ import type { Projects, Project } from "@/helpers/interfaces";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getBlockData } from "@/helpers/getBlockData";
+const { locale } = useI18n();
 gsap.registerPlugin(ScrollTrigger);
 
 const props = defineProps({
@@ -30,27 +31,20 @@ const props = defineProps({
   },
 });
 
-const projects = reactive<Projects>({
-  title: "",
-  project: [] as Project[],
-});
+const { data: projectsData } = await useAsyncData("projectsData", () =>
+  getBlockData(props.pageSlug, locale.value, "create-block/projects")
+);
 
-const fetchBlockData = async () => {
-  const blockAttrs = await getBlockData(
-    props.pageSlug,
-    "create-block/projects"
-  );
-  if (blockAttrs) {
-    projects.title = blockAttrs.title || "";
-    projects.project = blockAttrs.projects.map((project: any) => ({
-      preview: project.link || "",
-      repo: project.repo || "",
-      image: project.image?.url || "",
-      gif: project.gif?.url || "",
-      isLive: project.isLive || false,
-    }));
-  }
-};
+const projects = reactive<Projects>({
+  title: projectsData.value.title,
+  project: projectsData.value.projects.map((project: Project) => ({
+    preview: project.link || "",
+    repo: project.repo || "",
+    image: project.image?.url || "",
+    gif: project.gif?.url || "",
+    isLive: project.isLive || false,
+  })),
+});
 
 const isMobile: Ref<boolean> = ref(false);
 
@@ -89,15 +83,16 @@ const destroyScrollTrigger = (): void => {
   });
 };
 
-onMounted(async () => {
-  await fetchBlockData();
-  updateWindowSize();
-  window.addEventListener("resize", updateWindowSize);
+onMounted(() => {
+  nextTick(() => {
+    updateWindowSize();
+    window.addEventListener("resize", updateWindowSize);
+  });
 });
 </script>
 
 <style scoped>
 h2 :deep(em) {
-  @apply text-red-600/80;
+  color: rgb(220 38 38 / 0.8);
 }
 </style>

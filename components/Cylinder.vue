@@ -1,9 +1,3 @@
-<template>
-  <div ref="canvasContainerRef">
-    <canvas ref="canvas" class="sticky" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import * as THREE from "three";
 import { gsap } from "gsap";
@@ -161,3 +155,9 @@ onMounted(() => {
   });
 });
 </script>
+
+<template>
+  <div ref="canvasContainerRef">
+    <canvas ref="canvas" class="sticky" />
+  </div>
+</template>

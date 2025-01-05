@@ -1,9 +1,3 @@
-<template>
-  <div class="w-full" ref="container">
-    <canvas ref="canvas" class="size-full" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import * as THREE from "three";
 const container = ref<HTMLElement | null>(null);
@@ -18,44 +12,44 @@ const cursor = {
 };
 
 const vertexShader = `
-  precision mediump float;
-
-  uniform vec2 uFrequency;
-  uniform float uTime;
-  uniform float uAmplitude;
-
-  attribute float aRandom;
-
-  varying vec2 vUv;
-  varying float vElevation;
-
-  void main() {
-    vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-    float elevation = sin(modelPosition.x * uFrequency.x - uTime) * uAmplitude;
-    elevation += sin(modelPosition.y * uFrequency.y - uTime) * uAmplitude;
-
-    modelPosition.z += elevation;
-    gl_Position = projectionMatrix * viewMatrix * modelPosition;
-    vUv = uv;
-    vElevation = elevation;
-  }
-`;
+   precision mediump float;
+ 
+   uniform vec2 uFrequency;
+   uniform float uTime;
+   uniform float uAmplitude;
+ 
+   attribute float aRandom;
+ 
+   varying vec2 vUv;
+   varying float vElevation;
+ 
+   void main() {
+     vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+     float elevation = sin(modelPosition.x * uFrequency.x - uTime) * uAmplitude;
+     elevation += sin(modelPosition.y * uFrequency.y - uTime) * uAmplitude;
+ 
+     modelPosition.z += elevation;
+     gl_Position = projectionMatrix * viewMatrix * modelPosition;
+     vUv = uv;
+     vElevation = elevation;
+   }
+ `;
 
 const fragmentShader = `
-  precision mediump float;
-
-  uniform sampler2D uTexture;
-  uniform vec3 uColor;
-  uniform float uTime;
-
-  varying vec2 vUv;
-  varying float vElevation;
-
-  void main() {
-    vec3 color = texture2D(uTexture, vUv).rgb;
-    gl_FragColor = vec4(color, 1.0);
-  }
-`;
+   precision mediump float;
+ 
+   uniform sampler2D uTexture;
+   uniform vec3 uColor;
+   uniform float uTime;
+ 
+   varying vec2 vUv;
+   varying float vElevation;
+ 
+   void main() {
+     vec3 color = texture2D(uTexture, vUv).rgb;
+     gl_FragColor = vec4(color, 1.0);
+   }
+ `;
 
 onMounted(() => {
   const canvasElement = canvas.value;
@@ -198,3 +192,9 @@ onMounted(() => {
   });
 });
 </script>
+
+<template>
+  <div class="w-full" ref="container">
+    <canvas ref="canvas" class="size-full" />
+  </div>
+</template>

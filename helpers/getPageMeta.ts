@@ -1,4 +1,4 @@
-export const getBlockData = async (slug, locale, block) => {
+export const getPageMeta = async (slug, locale) => {
   try {
     const response = await $fetch("/api/wp");
     const pagesData = response?.data || response;
@@ -19,14 +19,7 @@ export const getBlockData = async (slug, locale, block) => {
       throw new Error(`Localized page with ID "${postId}" not found`);
     }
 
-    const gBlock = localizedPage.gutenberg_blocks?.find(
-      (el) => el.blockName === block
-    );
-    if (!gBlock) {
-      throw new Error(`Block "${block}" not found in page "${slug}"`);
-    }
-
-    return gBlock.attrs || null;
+    return localizedPage.yoast_head_json;
   } catch (error) {
     console.error("API call error:", error.message);
     return null;

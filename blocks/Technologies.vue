@@ -1,3 +1,26 @@
+<script setup lang="ts">
+import type { Technologies } from "@/helpers/interfaces";
+import { getBlockData } from "@/helpers/getBlockData";
+const { locale } = useI18n();
+const props = defineProps({
+  pageSlug: {
+    type: String,
+    required: true,
+  },
+});
+
+const { data: technologiesData } = await useAsyncData("technologiesData", () =>
+  getBlockData(props.pageSlug, locale.value, "create-block/technologies")
+);
+
+const technologies = ref<Technologies>({
+  title: technologiesData.value.title,
+  technology: technologiesData.value.technologies.map(
+    (tech: any) => tech.image?.url
+  ),
+});
+</script>
+
 <template>
   <section class="pt-20 md:pt-40 relative">
     <div class="w-full max-w-screen-xl px-5 mx-auto relative">
@@ -13,39 +36,8 @@
   </section>
 </template>
 
-<script setup lang="ts">
-import type { Technologies } from "@/helpers/interfaces";
-import { getBlockData } from "@/helpers/getBlockData";
-const props = defineProps({
-  pageSlug: {
-    type: String,
-    required: true,
-  },
-});
-const technologies = ref<Technologies>({
-  title: "",
-  technology: [],
-});
-const fetchBlockData = async () => {
-  const blockAttrs = await getBlockData(
-    props.pageSlug,
-    "create-block/technologies"
-  );
-
-  if (blockAttrs) {
-    technologies.value.title = blockAttrs.title || "";
-    technologies.value.technology = blockAttrs.technologies.map(
-      (tech: any) => tech.image?.url || ""
-    );
-  }
-};
-onMounted(() => {
-  fetchBlockData();
-});
-</script>
-
 <style scoped>
 h2 :deep(em) {
-  @apply text-red-600/80;
+  color: rgb(220 38 38 / 0.8);
 }
 </style>

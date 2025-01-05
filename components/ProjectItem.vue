@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import type { Project } from "@/helpers/interfaces";
+const props = defineProps<{ project: Project }>();
+</script>
+
 <template>
   <div
     class="relative overflow-hidden project-item"
@@ -63,8 +68,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { Project } from "@/helpers/interfaces";
-const props = defineProps<{ project: Project }>();
-</script>

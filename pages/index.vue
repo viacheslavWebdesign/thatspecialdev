@@ -1,76 +1,42 @@
-<template>
-  <div class="bg-gradient-to-tr from-black to-zinc-900 fixed inset-0"></div>
-  <div
-    ref="spotRef"
-    class="fixed top-1/2 left-1/2 size-[300px] md:size-3/4 pointer-events-none"
-  >
-    <Spot />
-  </div>
-  <div
-    ref="languageSwitcherRef"
-    class="opacity-0 fixed top-5 lg:top-20 right-5 lg:right-20 z-30"
-  >
-    <LanguageSwitcher />
-  </div>
-  <main class="relative z-10 overflow-hidden">
-    <div ref="headContainerRef" class="fixed left-0 top-0 w-full z-20">
-      <Intro
-        v-if="showIntro"
-        ref="headRef"
-        @startAnimation="handleStart"
-        :isAnimationStopped="isAnimationStopped"
-        :pageSlug="slug"
-      />
-    </div>
-    <div class="relative">
-      <div><Services :pageSlug="slug" /></div>
-      <div><Experience :pageSlug="slug" /></div>
-      <div ref="technologiesRef"><Technologies :pageSlug="slug" /></div>
-      <div><Projects :pageSlug="slug" /></div>
-      <div ref="contactsRef"><Contacts :pageSlug="slug" /></div>
-    </div>
-  </main>
-</template>
-
 <script setup lang="ts">
+import { getPageMeta } from "@/helpers/getPageMeta";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
-import Intro from "@/blocks/Intro.vue";
-import { getPageData } from "@/helpers/getPageData";
 
+const { locale } = useI18n();
+
+const languageSwitcherRef = ref<HTMLElement | null>(null);
+const showIntro = ref<boolean>(true);
+const showContent = ref<boolean>(true);
+const headContainerRef = ref<HTMLElement | null>(null);
+const spotRef = ref<HTMLElement | null>(null);
+const technologiesRef = ref<HTMLElement | null>(null);
+const contactsRef = ref<HTMLElement | null>(null);
 const slug: string = "main";
 
-const { data: seoData, error } = await useAsyncData("seoData", () =>
-  getPageData(slug)
-);
+const { data: meta } = useAsyncData("pageMeta", async () => {
+  return await getPageMeta(slug, locale.value);
+});
 
-if (seoData.value) {
-  const seo = seoData.value[0].yoast_head_json;
+if (meta.value) {
   useHead({
-    title: seo.title,
+    title: meta.value.title,
     meta: [
-      { name: "description", content: seo.description },
-      { name: "robots", content: `${seo.robots.index}, ${seo.robots.follow}` },
-      { property: "og:title", content: seo.og_title },
-      { property: "og:description", content: seo.og_description },
-      { property: "og:url", content: seo.og_url },
-      { property: "og:type", content: seo.og_type },
-      { property: "og:locale", content: seo.og_locale },
-      { name: "twitter:card", content: seo.twitter_card },
+      { name: "description", content: meta.value.description },
+      {
+        name: "robots",
+        content: `${meta.value.robots.index}, ${meta.value.robots.follow}`,
+      },
+      { property: "og:title", content: meta.value.og_title },
+      { property: "og:description", content: meta.value.og_description },
+      { property: "og:url", content: meta.value.og_url },
+      { property: "og:type", content: meta.value.og_type },
+      { property: "og:locale", content: meta.value.og_locale },
+      { name: "twitter:card", content: meta.value.twitter_card },
     ],
   });
 }
-
-const headRef = ref<InstanceType<typeof Intro> | null>(null);
-const headContainerRef = ref<HTMLElement | null>(null);
-const languageSwitcherRef = ref<HTMLElement | null>(null);
-const showContent = ref<boolean>(true);
-const showIntro = ref<boolean>(true);
-const isAnimationStopped = ref<boolean>(false);
-const technologiesRef = ref<HTMLElement | null>(null);
-const contactsRef = ref<HTMLElement | null>(null);
-const spotRef = ref<HTMLElement | null>(null);
 
 const createTimeline = (el: HTMLElement, steps: any[]) => {
   const tl = gsap.timeline({ paused: true });
@@ -134,58 +100,19 @@ const timelines = {
 };
 
 const animateOut = (): void => {
-  const head = headRef.value;
-  if (!head) return;
-
-  const {
-    titleRef: title,
-    textRef: text,
-    faceRef: face,
-    buttonRef: button,
-    buttonBackgroundRef: buttonBackground,
-  } = head;
-  const buttonLetters = button?.querySelectorAll(".letter");
   const languageSwitcher = languageSwitcherRef.value;
   const headContainer = headContainerRef.value;
 
-  if (
-    [
-      title,
-      text,
-      face,
-      button,
-      buttonBackground,
-      buttonLetters,
-      languageSwitcher,
-      headContainer,
-    ].includes(null)
-  )
-    return;
-
-  button.classList.remove("border-slate-200/30");
-  button.classList.add("text-black", "border-red-600/80");
-  buttonBackground.classList.remove("translate-y-full");
-
-  gsap.killTweensOf(buttonLetters);
-  gsap.to(buttonLetters, { opacity: 1 });
+  if (!languageSwitcher || !headContainer) return;
 
   const tl = gsap.timeline();
-  tl.to([title, text, face, languageSwitcher], {
+  tl.to(languageSwitcher, {
     opacity: 0,
     y: "-50%",
     duration: 0.3,
     stagger: 0.1,
     ease: "power2.in",
   })
-    .to(button, {
-      y: "-50%",
-      x: "-50%",
-      top: "50%",
-      left: "50%",
-      ease: "power2.inOut",
-      scale: 1.2,
-      duration: 1,
-    })
     .to(headContainer, { y: "-100%", duration: 2, ease: "power3.inOut" })
     .to(languageSwitcher, {
       opacity: 1,
@@ -197,19 +124,9 @@ const animateOut = (): void => {
     .add(() => {
       showIntro.value = false;
     });
-
-  isAnimationStopped.value = true;
 };
 
 const checkAndSetElements = () => {
-  if (
-    !headRef.value ||
-    !languageSwitcherRef.value ||
-    !technologiesRef.value ||
-    !contactsRef.value ||
-    !spotRef.value
-  )
-    return false;
   gsap.set(spotRef.value, {
     x: "-50%",
     y: "-50%",
@@ -221,17 +138,13 @@ const checkAndSetElements = () => {
 
 onMounted(() => {
   gsap.set("body", { overflow: "hidden" });
-
   if (!checkAndSetElements()) return;
-
-  const button = headRef.value?.buttonRef;
   const languageSwitcher = languageSwitcherRef.value;
-
+  if (!languageSwitcher) return;
   gsap.to(languageSwitcher, {
     opacity: 1,
     delay: 6,
     duration: 1,
-    onComplete: () => button?.classList.remove("pointer-events-none"),
   });
 });
 
@@ -265,3 +178,31 @@ watch(showContent, (newVal) => {
   if (!newVal) animateOut();
 });
 </script>
+
+<template>
+  <div class="bg-gradient-to-tr from-black to-zinc-900 fixed inset-0"></div>
+  <div
+    ref="spotRef"
+    class="fixed top-1/2 left-1/2 size-[300px] md:size-3/4 pointer-events-none"
+  >
+    <Spot />
+  </div>
+  <div
+    ref="languageSwitcherRef"
+    class="opacity-0 fixed top-5 lg:top-20 right-5 lg:right-20 z-30"
+  >
+    <LanguageSwitcher />
+  </div>
+  <main class="relative z-10 overflow-hidden">
+    <div ref="headContainerRef" class="fixed left-0 top-0 w-full z-20">
+      <Intro v-if="showIntro" :pageSlug="slug" @startAnimation="handleStart" />
+    </div>
+    <div class="relative">
+      <div><Services :pageSlug="slug" /></div>
+      <div><Experience :pageSlug="slug" /></div>
+      <div ref="technologiesRef"><Technologies :pageSlug="slug" /></div>
+      <div><Projects :pageSlug="slug" /></div>
+      <div ref="contactsRef"><Contacts :pageSlug="slug" /></div>
+    </div>
+  </main>
+</template>
