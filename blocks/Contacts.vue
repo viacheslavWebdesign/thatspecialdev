@@ -28,8 +28,9 @@ const details = ref<Details>({
   })),
 });
 
-const contactsSectionRef = ref<HTMLElement | null>(null);
-const contactsRef = ref<HTMLElement | null>(null);
+const slidesSectionRef = ref<HTMLElement | null>(null);
+const slidesRef = ref<HTMLElement | null>(null);
+const detailsRef = ref<HTMLElement | null>(null);
 
 const groupRotationRef = ref(new THREE.Euler(0, 0, 0));
 let groupRotation = groupRotationRef.value;
@@ -43,37 +44,42 @@ gsap.registerPlugin(ScrollTrigger);
 
 onMounted(() => {
   nextTick(() => {
-    const contactsSection = contactsSectionRef.value;
-    const contacts = contactsRef.value;
+    const slidesSection = slidesSectionRef.value;
+    const slides = slidesRef.value;
+    const details = detailsRef.value;
 
-    if (!contacts || !contactsSection) return;
+    if (!slides || !slidesSection || !details) return;
 
     const getScrollAmount = (): number => {
-      const contactsWidth: number = contacts.scrollWidth;
-      const sectionWidth: number = contactsSection.clientWidth;
-      return contactsWidth - sectionWidth;
+      const slidesWidth: number = slides.scrollWidth;
+      const sectionWidth: number = slidesSection.clientWidth;
+      return slidesWidth - sectionWidth;
     };
 
-    const tween = gsap.to(contacts, {
+    const tween = gsap.to(slides, {
       x: () => -getScrollAmount(),
       ease: "none",
     });
 
     ScrollTrigger.create({
-      trigger: contactsSection,
+      trigger: slidesSection,
       start: "top top",
       end: () => `+=${getScrollAmount()}`,
       pin: true,
       animation: tween,
       invalidateOnRefresh: true,
       scrub: 1,
+    });
+    ScrollTrigger.create({
+      trigger: details,
+      start: "top bottom",
+      end: "bottom bottom",
+      invalidateOnRefresh: true,
+      scrub: 1,
       onUpdate: (self) => {
-        const lastSlideIndex = slides.length - 1;
-        if (self.progress >= lastSlideIndex / slides.length) {
-          const rotationAmount = self.progress * 720;
-          const radians = THREE.MathUtils.degToRad(rotationAmount);
-          groupRotation.set(0, radians, 0);
-        }
+        const rotationAmount = self.progress * 360;
+        const radians = THREE.MathUtils.degToRad(rotationAmount);
+        groupRotation.set(radians, 0, 0);
       },
     });
   });
@@ -81,8 +87,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="relative overflow-hidden" ref="contactsSectionRef">
-    <div class="flex" ref="contactsRef">
+  <section class="relative overflow-hidden" ref="slidesSectionRef">
+    <div class="flex" ref="slidesRef">
       <div
         v-for="(slide, index) in slides"
         :key="index"
@@ -97,26 +103,29 @@ onMounted(() => {
           </h2>
         </div>
       </div>
-      <div class="h-svh w-screen flex items-center flex-none relative">
-        <div
-          class="w-full max-w-screen-xl px-5 mx-auto relative -translate-y-1/4 md:translate-y-0"
+    </div>
+  </section>
+  <section class="relative overflow-hidden" ref="detailsRef">
+    <div class="h-svh w-screen flex items-center flex-none relative">
+      <div
+        class="w-full max-w-screen-xl px-5 mx-auto relative -translate-y-1/4 md:translate-y-0"
+      >
+        <Card
+          v-if="details.texture"
+          :texture="details.texture"
+          @groupRotation="handleGroupRotation"
+        />
+      </div>
+      <div
+        class="flex flex-col md:flex-row w-full items-center justify-center gap-4 md:gap-16 absolute left-0 bottom-[10%] md:bottom-[15%] z-[1]"
+      >
+        <UiLink
+          target="_blank"
+          v-for="(requisite, index) in details.requisites"
+          :href="requisite.link"
+          :key="index"
+          >{{ requisite.type }}</UiLink
         >
-          <Card
-            v-if="details.texture"
-            :texture="details.texture"
-            @groupRotation="handleGroupRotation"
-          />
-        </div>
-        <div
-          class="flex flex-col md:flex-row w-full items-center justify-center gap-4 md:gap-16 absolute left-0 bottom-[10%] md:bottom-[15%] z-[1]"
-        >
-          <UiLink
-            target="_blank"
-            v-for="(requisite, index) in details.requisites"
-            :href="requisite.link"
-            >{{ requisite.type }}</UiLink
-          >
-        </div>
       </div>
     </div>
   </section>
