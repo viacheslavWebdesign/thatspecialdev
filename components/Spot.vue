@@ -48,9 +48,9 @@ onLoop(({ elapsed }) => {
 
 <template>
   <TresCanvas alpha>
-    <TresPerspectiveCamera :position="[0, 0, 4]" />
+    <TresPerspectiveCamera :position="[0, 0, 5]" />
     <TresGroup>
-      <TresMesh :position="[0.5, 0, 0]" ref="blobRef">
+      <TresMesh :position="[0.2, 0, 0]" ref="blobRef">
         <TresCircleGeometry :args="[1, 64]" />
         <TresShaderMaterial
           :vertex-shader="vertexShader"
