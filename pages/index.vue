@@ -183,7 +183,7 @@ watch(showContent, (newVal) => {
   <div class="bg-gradient-to-tr from-black to-zinc-900 fixed inset-0"></div>
   <div
     ref="spotRef"
-    class="fixed top-1/2 left-1/2 size-[300px] md:size-3/4 pointer-events-none"
+    class="fixed top-1/2 left-1/2 size-[300px] md:size-[80%] pointer-events-none"
   >
     <Spot />
   </div>

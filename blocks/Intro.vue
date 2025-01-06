@@ -174,7 +174,7 @@ onBeforeUnmount(() => {
     class="relative overflow-hidden bg-gradient-to-tr from-black to-zinc-900"
   >
     <div
-      class="size-[300px] md:size-2/3 blur-2xl absolute top-0 left-0 lg:bottom-0 lg:top-auto lg:left-auto lg:right-[5%] -translate-x-1/3 lg:translate-x-1/3 -translate-y-1/3 lg:translate-y-1/3 opacity-60 pointer-events-none"
+      class="size-[300px] md:size-[80%] blur-2xl absolute top-0 left-0 lg:bottom-0 lg:top-auto lg:left-auto lg:right-[5%] -translate-x-1/3 lg:translate-x-1/3 -translate-y-1/3 lg:translate-y-1/3 opacity-60 pointer-events-none"
     >
       <Spot />
     </div>
