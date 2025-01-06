@@ -180,7 +180,7 @@ onMounted(() => {
 
     const animate = () => {
       smoothCameraPosition();
-      material.uniforms.uTime.value += 0.02;
+      material.uniforms.uTime.value += 0.028;
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
     };

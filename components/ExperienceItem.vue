@@ -30,7 +30,7 @@ const { t } = useI18n;
           :key="index"
           :href="project.link"
           target="_blank"
-          class="h-8 w-24 relative"
+          class="h-8 w-24 relative transition-opacity hover:opacity-30"
           ><img
             :src="project.image"
             class="top-0 left-0 w-full h-full absolute object-contain object-center"
