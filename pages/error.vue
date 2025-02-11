@@ -8,8 +8,6 @@ const slug: string = "errorpage";
 const localPath = useLocalePath();
 const { locale } = useI18n();
 
-const meta = useState("pageMeta", () => null);
-
 const { data: errorData } = await useAsyncData("errorData", () =>
   getBlockData(slug, locale.value, "create-block/errorpage")
 );
@@ -19,39 +17,30 @@ const er = ref<ErrorPage>({
   button: errorData.value.buttonText,
 });
 
-const { data: metaData } = await useAsyncData("pageMeta", async () => {
-  const res = await getPageMeta(slug, locale.value);
-  meta.value = res;
-  return res;
+const meta = useState("pageMeta", () => null);
+
+const { data } = await useAsyncData("pageMeta", async () => {
+  return await getPageMeta(slug, locale.value);
 });
+
+if (process.server) {
+  meta.value = data.value;
+}
 
 const pageTitle = computed(() => meta.value?.title || "404");
 
 useHead({
-  status: 404,
   title: pageTitle,
   meta: computed(() => [
     {
       name: "description",
-      content: meta.value?.description || "Page not found",
+      content: meta.value?.description || "Default description",
     },
     {
       name: "robots",
       content: meta.value
         ? `${meta.value.robots.index}, ${meta.value.robots.follow}`
         : "noindex, nofollow",
-    },
-    { property: "og:title", content: meta.value?.og_title || "404" },
-    {
-      property: "og:description",
-      content: meta.value?.og_description || "This page does not exist.",
-    },
-    { property: "og:url", content: meta.value?.og_url || "/" },
-    { property: "og:type", content: meta.value?.og_type || "website" },
-    { property: "og:locale", content: meta.value?.og_locale || "en_US" },
-    {
-      name: "twitter:card",
-      content: meta.value?.twitter_card || "summary_large_image",
     },
   ]),
 });
@@ -80,14 +69,19 @@ onMounted(() => {
   cursorSize.height = cursor.offsetHeight;
 
   const resizeObserver = new ResizeObserver(() => {
-    cursorSize.width = cursor.offsetWidth;
-    cursorSize.height = cursor.offsetHeight;
+    if (cursor) {
+      cursorSize.width = cursor.offsetWidth;
+      cursorSize.height = cursor.offsetHeight;
+    }
   });
 
-  resizeObserver.observe(cursor);
-
+  if (cursor) {
+    resizeObserver.observe(cursor);
+  }
   onBeforeUnmount(() => {
-    resizeObserver.disconnect();
+    if (cursor) {
+      resizeObserver.unobserve(cursor);
+    }
   });
 });
 </script>
@@ -110,11 +104,11 @@ onMounted(() => {
         v-html="er.title"
       ></h2>
       <div class="flex justify-center">
-        <NuxtLink
-          :to="localPath('/')"
+        <a
+          :href="localPath('/')"
           class="block text-lg md:text-2xl uppercase font-machina tracking-widest border-solid border-b-[1px] border-slate-200/30 transition-colors relative overflow-hidden group hover:text-black hover:border-red-600/80 pt-1"
           ><span v-html="er.button"></span
-        ></NuxtLink>
+        ></a>
       </div>
     </div>
   </section>

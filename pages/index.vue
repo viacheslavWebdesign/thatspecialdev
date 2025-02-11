@@ -35,7 +35,7 @@ useHead({
       name: "robots",
       content: meta.value
         ? `${meta.value.robots.index}, ${meta.value.robots.follow}`
-        : "index, follow",
+        : "noindex, nofollow",
     },
     {
       property: "og:title",

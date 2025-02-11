@@ -16,3 +16,5 @@ const redirectIfPagePathIsInvalid = () => {
 
 redirectIfPagePathIsInvalid();
 </script>
+
+<template><div></div></template>
