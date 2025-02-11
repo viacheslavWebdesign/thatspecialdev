@@ -25,7 +25,7 @@ const technologies = ref<Technologies>({
   <section class="pt-20 md:pt-40 relative">
     <div class="w-full max-w-screen-xl px-5 mx-auto relative">
       <h2
-        class="text-4xl md:text-8xl font-bold mb-10 md:mb-32"
+        class="text-4xl md:text-8xl font-bold mb-10 md:mb-32 text-center"
         v-html="technologies.title"
       ></h2>
     </div>

@@ -1,7 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: false },
-  modules: ["@nuxtjs/tailwindcss", "@tresjs/nuxt", "@nuxtjs/i18n"],
+  modules: [
+    "@nuxtjs/tailwindcss",
+    "@tresjs/nuxt",
+    "@nuxtjs/i18n",
+    "@nuxt/image",
+  ],
   compatibilityDate: "2024-11-01",
   components: {
     dirs: ["blocks", "components"],

@@ -74,11 +74,11 @@ onMounted(() => {
   >
     <div class="w-full max-w-screen-xl px-5 mx-auto" ref="servicesContainerRef">
       <h2
-        class="text-4xl md:text-8xl font-bold mb-10 md:mb-32"
+        class="text-4xl md:text-8xl font-bold mb-10 md:mb-32 text-center"
         v-html="services.title"
       ></h2>
       <div class="flex gap-6 md:gap-10" ref="servicesRef">
-        <ServiceItem
+        <ServiceItemSimple
           v-for="(service, index) in services.service"
           :service="service"
           :key="index"

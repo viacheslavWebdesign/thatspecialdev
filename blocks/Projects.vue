@@ -1,21 +1,3 @@
-<template>
-  <section class="pt-20 md:pt-40 relative">
-    <div class="w-full max-w-screen-xl px-5 mx-auto relative">
-      <h2
-        class="text-4xl md:text-8xl font-bold mb-10 md:mb-32"
-        v-html="projects.title"
-      ></h2>
-    </div>
-    <div class="w-full px-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-      <ProjectItem
-        v-for="(project, index) in projects.project"
-        :project="project"
-        :key="index"
-      />
-    </div>
-  </section>
-</template>
-
 <script setup lang="ts">
 import type { Projects, Project } from "@/helpers/interfaces";
 import { gsap } from "gsap";
@@ -90,6 +72,24 @@ onMounted(() => {
   });
 });
 </script>
+
+<template>
+  <section class="pt-20 md:pt-40 relative">
+    <div class="w-full max-w-screen-xl px-5 mx-auto relative">
+      <h2
+        class="text-4xl md:text-8xl font-bold mb-10 md:mb-32 text-center"
+        v-html="projects.title"
+      ></h2>
+    </div>
+    <div class="w-full px-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <ProjectItem
+        v-for="(project, index) in projects.project"
+        :project="project"
+        :key="index"
+      />
+    </div>
+  </section>
+</template>
 
 <style scoped>
 h2 :deep(em) {

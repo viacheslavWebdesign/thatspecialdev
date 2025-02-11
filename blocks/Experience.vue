@@ -32,11 +32,11 @@ const experience = ref<Experience>({
   <section class="pt-20 md:pt-40 relative">
     <div class="w-full max-w-screen-xl px-5 mx-auto relative">
       <h2
-        class="text-4xl md:text-8xl font-bold mb-10 md:mb-32"
+        class="text-4xl md:text-8xl font-bold mb-10 md:mb-32 text-center"
         v-html="experience.title"
       ></h2>
       <div class="flex flex-col gap-12 md:gap-24">
-        <ExperienceItem
+        <ExperienceItemSimple
           v-for="(job, index) in experience.job"
           :job="job"
           :key="index"
