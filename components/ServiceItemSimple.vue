@@ -33,6 +33,8 @@ const cardLeave = (ev: MouseEvent) => {
     <NuxtImg
       loading="lazy"
       :src="service.texture"
+      width="224"
+      height="224"
       class="size-48 md:size-56 flex-none absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 z-[1] group-hover:translate-x-[15%] group-hover:translate-y-[15%] transition-transform ease-in-out duration-300"
     ></NuxtImg>
     <div class="relative z-[1]">

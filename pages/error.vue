@@ -1,3 +1,97 @@
+<script setup lang="ts">
+import type { ErrorPage } from "@/helpers/interfaces";
+import { gsap } from "gsap";
+import { getBlockData } from "@/helpers/getBlockData";
+import { getPageMeta } from "@/helpers/getPageMeta";
+const cursorRef = ref<HTMLElement | null>(null);
+const slug: string = "errorpage";
+const localPath = useLocalePath();
+const { locale } = useI18n();
+
+const meta = useState("pageMeta", () => null);
+
+const { data: errorData } = await useAsyncData("errorData", () =>
+  getBlockData(slug, locale.value, "create-block/errorpage")
+);
+
+const er = ref<ErrorPage>({
+  title: errorData.value.title,
+  button: errorData.value.buttonText,
+});
+
+const { data: metaData } = await useAsyncData("pageMeta", async () => {
+  const res = await getPageMeta(slug, locale.value);
+  meta.value = res;
+  return res;
+});
+
+const pageTitle = computed(() => meta.value?.title || "404");
+
+useHead({
+  status: 404,
+  title: pageTitle,
+  meta: computed(() => [
+    {
+      name: "description",
+      content: meta.value?.description || "Page not found",
+    },
+    {
+      name: "robots",
+      content: meta.value
+        ? `${meta.value.robots.index}, ${meta.value.robots.follow}`
+        : "noindex, nofollow",
+    },
+    { property: "og:title", content: meta.value?.og_title || "404" },
+    {
+      property: "og:description",
+      content: meta.value?.og_description || "This page does not exist.",
+    },
+    { property: "og:url", content: meta.value?.og_url || "/" },
+    { property: "og:type", content: meta.value?.og_type || "website" },
+    { property: "og:locale", content: meta.value?.og_locale || "en_US" },
+    {
+      name: "twitter:card",
+      content: meta.value?.twitter_card || "summary_large_image",
+    },
+  ]),
+});
+
+const cursorSize = reactive({
+  width: 0,
+  height: 0,
+});
+
+const updateCursorPosition = (event: MouseEvent): void => {
+  const cursor = cursorRef.value;
+  if (!cursor) return;
+
+  const xTo = gsap.quickTo(cursor, "x", { duration: 0.4, ease: "power1" });
+  const yTo = gsap.quickTo(cursor, "y", { duration: 0.4, ease: "power1" });
+
+  xTo(event.clientX - cursorSize.width / 2);
+  yTo(event.clientY - cursorSize.height / 2);
+};
+
+onMounted(() => {
+  const cursor = cursorRef.value;
+  if (!cursor) return;
+
+  cursorSize.width = cursor.offsetWidth;
+  cursorSize.height = cursor.offsetHeight;
+
+  const resizeObserver = new ResizeObserver(() => {
+    cursorSize.width = cursor.offsetWidth;
+    cursorSize.height = cursor.offsetHeight;
+  });
+
+  resizeObserver.observe(cursor);
+
+  onBeforeUnmount(() => {
+    resizeObserver.disconnect();
+  });
+});
+</script>
+
 <template>
   <div class="bg-gradient-to-tr from-black to-zinc-900 fixed inset-0"></div>
   <section
@@ -25,90 +119,6 @@
     </div>
   </section>
 </template>
-
-<script setup lang="ts">
-import type { ErrorPage } from "@/helpers/interfaces";
-import { gsap } from "gsap";
-import { getBlockData } from "@/helpers/getBlockData";
-import { getPageMeta } from "@/helpers/getPageMeta";
-const cursorRef = ref<HTMLElement | null>(null);
-const slug: string = "errorpage";
-const localPath = useLocalePath();
-const { locale } = useI18n();
-
-const { data: errorData } = await useAsyncData("errorData", () =>
-  getBlockData(slug, locale.value, "create-block/errorpage")
-);
-
-const er = ref<ErrorPage>({
-  title: errorData.value.title,
-  button: errorData.value.buttonText,
-});
-
-const { data: meta } = useAsyncData("pageMeta", async () => {
-  return await getPageMeta(slug, locale.value);
-});
-
-if (meta.value) {
-  useHead({
-    status: 404,
-    title: meta.value.title,
-    meta: [
-      { name: "description", content: meta.value.description },
-      {
-        name: "robots",
-        content: `${meta.value.robots.index}, ${meta.value.robots.follow}`,
-      },
-      { property: "og:title", content: meta.value.og_title },
-      { property: "og:description", content: meta.value.og_description },
-      { property: "og:url", content: meta.value.og_url },
-      { property: "og:type", content: meta.value.og_type },
-      { property: "og:locale", content: meta.value.og_locale },
-      { name: "twitter:card", content: meta.value.twitter_card },
-    ],
-  });
-}
-
-const cursorSize = reactive({
-  width: 0,
-  height: 0,
-});
-
-const updateCursorPosition = (event: MouseEvent): void => {
-  const cursor = cursorRef.value;
-  if (!cursor) return;
-
-  const xTo = gsap.quickTo(cursor, "x", { duration: 0.4, ease: "power1" });
-  const yTo = gsap.quickTo(cursor, "y", { duration: 0.4, ease: "power1" });
-
-  xTo(event.clientX - cursorSize.width / 2);
-  yTo(event.clientY - cursorSize.height / 2);
-};
-
-onMounted(() => {
-  const cursor = cursorRef.value;
-  if (!cursor) return;
-
-  cursorSize.width = cursor.offsetWidth;
-  cursorSize.height = cursor.offsetHeight;
-
-  const resizeObserver = new ResizeObserver(() => {
-    if (cursor) {
-      cursorSize.width = cursor.offsetWidth;
-      cursorSize.height = cursor.offsetHeight;
-    }
-  });
-
-  if (cursor) {
-    resizeObserver.observe(cursor);
-  }
-  onBeforeUnmount(() => {
-    if (cursor) {
-      resizeObserver.unobserve(cursor);
-    }
-  });
-});
-</script>
 
 <style scoped>
 h2 :deep(em) {

@@ -174,10 +174,8 @@ onBeforeUnmount(() => {
     class="relative overflow-hidden bg-gradient-to-tr from-black to-zinc-900"
   >
     <div
-      class="size-[300px] md:size-[80%] blur-2xl absolute top-0 left-0 lg:bottom-0 lg:top-auto lg:left-auto lg:right-[5%] -translate-x-1/3 lg:translate-x-1/3 -translate-y-1/3 lg:translate-y-1/3 opacity-60 pointer-events-none"
-    >
-      <!-- <Spot /> -->
-    </div>
+      class="size-[300px] md:size-[70%] blur-3xl absolute top-0 left-0 lg:bottom-0 lg:top-auto lg:left-auto lg:right-[5%] -translate-x-1/3 lg:translate-x-1/3 -translate-y-1/3 lg:translate-y-1/3 opacity-15 pointer-events-none bg-red-600/80 rounded-full"
+    ></div>
     <div
       class="size-[200px] md:size-[400px] lg:size-[700px] absolute top-[20%] lg:top-1/2 -translate-x-1/2 -translate-y-1/2 left-1/2 lg:left-3/4"
     >

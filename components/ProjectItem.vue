@@ -9,7 +9,10 @@ const props = defineProps<{ project: Project }>();
     @mouseover="project.isHovered = true"
     @mouseleave="project.isHovered = false"
   >
-    <img
+    <NuxtImg
+      loading="lazy"
+      width="336"
+      height="188"
       :src="project.isHovered ? project.gif : project.image"
       class="relative w-full"
     />
