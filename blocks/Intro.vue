@@ -182,7 +182,7 @@ onBeforeUnmount(() => {
       <div class="size-full" ref="faceRef"><Face /></div>
     </div>
     <div
-      class="w-full max-w-screen-xl px-5 mx-auto min-h-svh flex items-end lg:items-center pb-16 md:pb-32 lg:pb-0 relative z-[1]"
+      class="w-full max-w-screen-xl px-5 mx-auto min-h-[100vh] min-h-svh flex items-end lg:items-center pb-16 md:pb-32 lg:pb-0 relative z-[1]"
     >
       <div class="md:max-w-3xl">
         <div class="mb-4 md:mb-10" ref="titleContainerRef">

@@ -92,7 +92,7 @@ onMounted(() => {
       <div
         v-for="(slide, index) in slides"
         :key="index"
-        class="h-svh w-screen flex items-center flex-none"
+        class="h-[100vh] h-svh w-screen flex items-center flex-none"
       >
         <div class="w-full max-w-screen-xl px-5 mx-auto relative">
           <h2
@@ -106,7 +106,7 @@ onMounted(() => {
     </div>
   </section>
   <section class="relative overflow-hidden" ref="detailsRef">
-    <div class="h-svh w-screen flex items-center flex-none relative">
+    <div class="h-[100vh] h-svh w-screen flex items-center flex-none relative">
       <div
         class="w-full max-w-screen-xl px-5 mx-auto relative -translate-y-1/4 md:translate-y-0"
       >

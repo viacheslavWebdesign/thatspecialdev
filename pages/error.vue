@@ -89,7 +89,7 @@ onMounted(() => {
 <template>
   <div class="bg-gradient-to-tr from-black to-zinc-900 fixed inset-0"></div>
   <section
-    class="py-20 md:py-40 relative min-h-svh flex items-center z-10 overflow-hidden"
+    class="py-20 md:py-40 relative min-h-[100vh] min-h-svh flex items-center z-10 overflow-hidden"
     @mousemove="updateCursorPosition"
   >
     <div
