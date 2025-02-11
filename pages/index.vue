@@ -10,7 +10,7 @@ const languageSwitcherRef = ref<HTMLElement | null>(null);
 const showIntro = ref<boolean>(true);
 const showContent = ref<boolean>(true);
 const headContainerRef = ref<HTMLElement | null>(null);
-const spotRef = ref<HTMLElement | null>(null);
+// const spotRef = ref<HTMLElement | null>(null);
 const technologiesRef = ref<HTMLElement | null>(null);
 const contactsRef = ref<HTMLElement | null>(null);
 const slug: string = "main";
@@ -127,12 +127,12 @@ const animateOut = (): void => {
 };
 
 const checkAndSetElements = () => {
-  gsap.set(spotRef.value, {
-    x: "-50%",
-    y: "-50%",
-    filter: "blur(40px)",
-    opacity: 0.4,
-  });
+  // gsap.set(spotRef.value, {
+  //   x: "-50%",
+  //   y: "-50%",
+  //   filter: "blur(40px)",
+  //   opacity: 0.4,
+  // });
   return true;
 };
 
@@ -153,15 +153,15 @@ const handleStart = (): void => {
 
   const technologies = technologiesRef.value;
   const contacts = contactsRef.value;
-  const spot = spotRef.value;
+  // const spot = spotRef.value;
 
   ScrollTrigger.create({
     trigger: technologies,
     invalidateOnRefresh: true,
     start: "top center",
     end: "bottom bottom",
-    onLeave: () => timelines.technologiesLeave(spot).restart(),
-    onEnterBack: () => timelines.technologiesEnterBack(spot).restart(),
+    // onLeave: () => timelines.technologiesLeave(spot).restart(),
+    // onEnterBack: () => timelines.technologiesEnterBack(spot).restart(),
   });
 
   ScrollTrigger.create({
@@ -169,8 +169,8 @@ const handleStart = (): void => {
     invalidateOnRefresh: true,
     start: "top center",
     end: "bottom bottom",
-    onEnter: () => timelines.contactsEnter(spot).restart(),
-    onLeaveBack: () => timelines.contactsLeaveBack(spot).restart(),
+    // onEnter: () => timelines.contactsEnter(spot).restart(),
+    // onLeaveBack: () => timelines.contactsLeaveBack(spot).restart(),
   });
 };
 
@@ -181,12 +181,12 @@ watch(showContent, (newVal) => {
 
 <template>
   <div class="bg-gradient-to-tr from-black to-zinc-900 fixed inset-0"></div>
-  <div
+  <!-- <div
     ref="spotRef"
     class="fixed top-1/2 left-1/2 size-[300px] md:size-[80%] pointer-events-none"
   >
     <Spot />
-  </div>
+  </div> -->
   <div
     ref="languageSwitcherRef"
     class="opacity-0 fixed top-5 lg:top-20 right-5 lg:right-20 z-30"
