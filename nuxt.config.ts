@@ -21,7 +21,7 @@ export default defineNuxtConfig({
         },
         {
           rel: "stylesheet",
-          href: "/fonts/TTInterfaces/stylesheet.css",
+          href: "/fonts/Inter/stylesheet.css",
         },
       ],
     },

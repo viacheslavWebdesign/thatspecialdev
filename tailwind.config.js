@@ -2,7 +2,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["TT Interfaces", "sans-serif"],
+        sans: ["Inter", "sans-serif"],
         machina: ["Neue Machina", "sans-serif"],
       },
     },
