@@ -35,9 +35,4 @@ export default defineNuxtConfig({
     trailingSlash: true,
     detectBrowserLanguage: false,
   },
-  runtimeConfig: {
-    private: {
-      wpKey: process.env.WP_API_KEY,
-    },
-  },
 });

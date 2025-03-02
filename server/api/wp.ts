@@ -1,15 +1,8 @@
 export default defineEventHandler(async (event) => {
-  const { wpKey } = useRuntimeConfig().private;
-
-  let uri = `https://back.thatspecial.dev/wp-json/wp/v2/pages`;
-
   try {
-    const data = await $fetch(uri, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${wpKey}`,
-      },
-    });
+    const data = await $fetch(
+      `https://back.thatspecial.dev/wp-json/wp/v2/pages`
+    );
 
     return data;
   } catch (error) {
